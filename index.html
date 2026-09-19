@@ -1,1 +1,145 @@
-
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<title>Minha Consultora MK — Shirlei Oliveira</title>
+<style>
+:root{--pink:#d81b60;--dark:#191919;--bg:#f7f4f5;--card:#fff;--muted:#777;--ok:#18864b;--line:#eadfe4}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--dark)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.app{max-width:520px;margin:auto;min-height:100vh;background:#fff;box-shadow:0 0 30px #00000010}
+header{background:linear-gradient(135deg,#171717,#3b3b3b);color:#fff;padding:26px 20px 22px;border-radius:0 0 24px 24px}
+.brand{font-size:24px;font-weight:800;letter-spacing:-.5px}.subtitle{opacity:.78;font-size:13px;margin-top:4px}.hero{margin-top:20px}.hero h1{margin:0;font-size:25px}.hero p{margin:7px 0 0;opacity:.86}
+nav{display:flex;gap:8px;overflow:auto;padding:12px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:5}
+nav button{border:0;background:#f5eef1;border-radius:20px;padding:9px 13px;white-space:nowrap}nav button.active{background:var(--dark);color:#fff}
+main{padding:16px 16px 90px}.section-title{display:flex;justify-content:space-between;align-items:center;margin:8px 0 12px}.section-title h2{font-size:19px;margin:0}.muted{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{border:1px solid var(--line);border-radius:17px;padding:12px;background:var(--card)}.product-img{height:125px;border-radius:13px;background:linear-gradient(145deg,#f2e4e9,#faf7f8);display:flex;align-items:center;justify-content:center;font-size:45px}.product-name{font-weight:700;margin:9px 0 3px}.price{font-size:18px;font-weight:800}.stock{font-size:12px;color:var(--ok);margin-top:4px}.stock.low{color:#b56a00}.stock.out{color:#b00020}.btn{border:0;border-radius:12px;padding:11px 13px;background:var(--pink);color:#fff;font-weight:700;width:100%;margin-top:10px}.btn.dark{background:var(--dark)}.btn.light{background:#f5eef1;color:var(--dark)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.list{display:flex;flex-direction:column;gap:10px}.row{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:12px}.qty{display:flex;align-items:center;gap:8px}.qty button{width:30px;height:30px;border:1px solid var(--line);background:#fff;border-radius:8px}.total{font-size:21px;font-weight:800}
+.form{display:grid;gap:10px}.form input,.form select,.form textarea{width:100%;padding:12px;border:1px solid #d9ccd2;border-radius:11px;background:#fff}.panel{border:1px solid var(--line);border-radius:17px;padding:15px;margin-bottom:12px}.tabs{display:flex;gap:8px;margin-bottom:12px}.tabs button{flex:1;border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px}.tabs button.active{background:var(--dark);color:#fff}
+.badge{display:inline-block;padding:4px 8px;border-radius:10px;background:#f5eef1;font-size:12px}.order{border:1px solid var(--line);border-radius:15px;padding:13px}.order+ .order{margin-top:10px}
+footer{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:9px 4px calc(9px + env(safe-area-inset-bottom));z-index:10}footer button{border:0;background:transparent;color:#555;font-size:12px}footer button strong{display:block;font-size:19px;color:var(--pink)}
+.notice{padding:12px;border-radius:12px;background:#fff6f8;border:1px solid #f1d7df;margin-bottom:12px;font-size:13px}
+@media(min-width:700px){.app{margin-top:20px;border-radius:24px;overflow:hidden}.app footer{position:sticky}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="brand">Minha Consultora MK</div>
+  <div class="subtitle">Atendimento personalizado • Shirlei Oliveira</div>
+  <div class="hero"><h1>Olá, seja bem-vinda!</h1><p>Encontre seus produtos, faça seu pedido e acompanhe suas compras.</p></div>
+</header>
+<nav id="nav"></nav>
+<main id="main"></main>
+<footer>
+  <button onclick="show('home')"><strong>⌂</strong>Início</button>
+  <button onclick="show('products')"><strong>◉</strong>Produtos</button>
+  <button onclick="show('orders')"><strong>▣</strong>Pedidos</button>
+  <button onclick="show('account')"><strong>◎</strong>Conta</button>
+</footer>
+</div>
+<script>
+const KEY='minhaConsultoraMK_v1';
+const demo={
+ customer:null,
+ products:[
+  {id:1,name:'Base Líquida',cat:'Maquiagem',price:89.90,stock:8,icon:'💄'},
+  {id:2,name:'Batom',cat:'Maquiagem',price:49.90,stock:12,icon:'💋'},
+  {id:3,name:'Máscara para Cílios',cat:'Maquiagem',price:74.90,stock:6,icon:'👁️'},
+  {id:4,name:'Hidratante Facial',cat:'Cuidados com a Pele',price:119.90,stock:5,icon:'✨'},
+  {id:5,name:'Perfume',cat:'Perfumes',price:199.90,stock:4,icon:'🌸'},
+  {id:6,name:'Kit Cuidados',cat:'Kits',price:249.90,stock:3,icon:'🎁'}
+ ],
+ cart:[],orders:[],customers:[]
+};
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||demo;
+let page='home', cat='Todos', admin=false;
+const money=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const save=()=>localStorage.setItem(KEY,JSON.stringify(db));
+function show(p){page=p;render()}
+function render(){
+ const nav=document.getElementById('nav'), main=document.getElementById('main');
+ nav.innerHTML=['home','products','orders','account'].map((x,i)=>`<button class="${page===x?'active':''}" onclick="show('${x}')">${['Início','Produtos','Pedidos','Conta'][i]}</button>`).join('')+
+ `<button onclick="show('admin')">Admin</button>`;
+ if(page==='home') main.innerHTML=home();
+ if(page==='products') main.innerHTML=products();
+ if(page==='orders') main.innerHTML=orders();
+ if(page==='account') main.innerHTML=account();
+ if(page==='admin') main.innerHTML=adminPage();
+}
+function home(){
+ const low=db.products.filter(p=>p.stock>0&&p.stock<=3);
+ return `<div class="notice"><b>Teste funcional:</b> este protótipo salva clientes, carrinho, pedidos e estoque neste dispositivo.</div>
+ <div class="section-title"><h2>Produtos em destaque</h2><button class="btn light" style="width:auto;margin:0" onclick="show('products')">Ver todos</button></div>
+ <div class="grid">${db.products.slice(0,4).map(productCard).join('')}</div>
+ ${low.length?`<div class="panel" style="margin-top:14px"><b>Últimas unidades</b><p class="muted">${low.map(p=>p.name+' ('+p.stock+')').join(' • ')}</p></div>`:''}
+ <div class="panel" style="margin-top:14px"><h3>Sobre Shirlei Oliveira</h3><p class="muted">Consultora Mary Kay. Este espaço foi criado para oferecer uma experiência de atendimento personalizada, facilitar seus pedidos e manter seu histórico de compras organizado.</p><button class="btn light" onclick="show('account')">Ver perfil e contatos</button></div>`;
+}
+function productCard(p){
+ let s=p.stock===0?'Esgotado':p.stock<=3?`Últimas ${p.stock} unidades`:`${p.stock} em estoque`;
+ return `<div class="card"><div class="product-img">${p.icon}</div><div class="product-name">${p.name}</div><div class="muted">${p.cat}</div><div class="price">${money(p.price)}</div><div class="stock ${p.stock===0?'out':p.stock<=3?'low':''}">${s}</div><button class="btn" ${p.stock===0?'disabled':''} onclick="add(${p.id})">Adicionar</button></div>`;
+}
+function products(){
+ const cats=['Todos',...new Set(db.products.map(p=>p.cat))];
+ const list=cat==='Todos'?db.products:db.products.filter(p=>p.cat===cat);
+ return `<div class="section-title"><h2>Produtos</h2><span class="badge">${db.products.filter(p=>p.stock>0).length} disponíveis</span></div>
+ <div class="tabs">${cats.map(c=>`<button class="${cat===c?'active':''}" onclick="cat='${c}';render()">${c}</button>`).join('')}</div>
+ <div class="grid">${list.map(productCard).join('')}</div>
+ <div class="panel" style="margin-top:14px"><b>Carrinho: ${db.cart.reduce((a,x)=>a+x.qty,0)} item(ns)</b><button class="btn dark" onclick="showCart()">Ver carrinho</button></div>`;
+}
+function add(id){const p=db.products.find(x=>x.id===id);const item=db.cart.find(x=>x.id===id);if(!p||p.stock<1)return;if(item){if(item.qty<p.stock)item.qty++;}else db.cart.push({id,qty:1});save();showCart()}
+function showCart(){
+ page='cart';document.getElementById('nav').innerHTML='';const main=document.getElementById('main');
+ if(!db.cart.length){main.innerHTML='<div class="panel"><h2>Seu carrinho está vazio.</h2><button class="btn" onclick="show(\\'products\\')">Escolher produtos</button></div>';return}
+ const items=db.cart.map(x=>({...x,p:db.products.find(p=>p.id===x.id)}));
+ const total=items.reduce((a,x)=>a+x.p.price*x.qty,0);
+ main.innerHTML=`<div class="section-title"><h2>Meu pedido</h2></div><div class="list">${items.map(x=>`<div class="row"><div><b>${x.p.name}</b><div class="muted">${money(x.p.price)} cada</div></div><div class="qty"><button onclick="changeQty(${x.id},-1)">−</button><b>${x.qty}</b><button onclick="changeQty(${x.id},1)">+</button></div></div>`).join('')}</div>
+ <div class="panel" style="margin-top:14px"><div class="muted">Total</div><div class="total">${money(total)}</div><button class="btn" onclick="checkout()">Confirmar pedido</button></div>`;
+}
+function changeQty(id,d){const i=db.cart.find(x=>x.id===id),p=db.products.find(x=>x.id===id);if(!i)return;i.qty+=d;if(i.qty<=0)db.cart=db.cart.filter(x=>x.id!==id);else if(i.qty>p.stock)i.qty=p.stock;save();showCart()}
+function checkout(){
+ if(!db.customer){alert('Cadastre-se ou entre na sua conta antes de confirmar o pedido.');show('account');return}
+ const items=db.cart.map(x=>({productId:x.id,name:db.products.find(p=>p.id===x.id).name,qty:x.qty,price:db.products.find(p=>p.id===x.id).price}));
+ if(items.some(x=>x.qty>db.products.find(p=>p.id===x.productId).stock)){alert('Um dos produtos ficou sem estoque suficiente.');render();return}
+ const total=items.reduce((a,x)=>a+x.price*x.qty,0);
+ const payment=prompt('Forma de pagamento: Pix, Dinheiro, Crédito ou Débito','Pix')||'A combinar';
+ items.forEach(x=>db.products.find(p=>p.id===x.productId).stock-=x.qty);
+ const order={id:Date.now(),customerId:db.customer.id,items,total,payment,status:'Pedido recebido',date:new Date().toLocaleString('pt-BR')};
+ db.orders.unshift(order);db.cart=[];save();alert('Pedido confirmado com sucesso! Número #'+String(order.id).slice(-6));show('orders')
+}
+function orders(){
+ if(!db.customer)return `<div class="panel"><h2>Meus pedidos</h2><p class="muted">Cadastre-se para consultar seu histórico de compras.</p><button class="btn" onclick="show('account')">Criar minha conta</button></div>`;
+ const os=db.orders.filter(o=>o.customerId===db.customer.id);
+ return `<div class="section-title"><h2>Meus pedidos</h2></div>${os.length?os.map(o=>`<div class="order"><b>Pedido #${String(o.id).slice(-6)}</b><span class="badge" style="float:right">${o.status}</span><div class="muted">${o.date} • ${o.payment}</div><hr>${o.items.map(i=>`${i.qty}× ${i.name} — ${money(i.price*i.qty)}`).join('<br>')}<p><b>Total: ${money(o.total)}</b></p><button class="btn light" onclick="repeatOrder(${o.id})">Comprar novamente</button></div>`).join(''): '<div class="panel"><p>Você ainda não fez pedidos.</p><button class="btn" onclick="show(\\'products\\')">Ver produtos</button></div>'}`;
+}
+function repeatOrder(id){const o=db.orders.find(x=>x.id===id);o.items.forEach(i=>{const p=db.products.find(p=>p.id===i.productId);if(p&&p.stock>0)db.cart.push({id:p.id,qty:Math.min(i.qty,p.stock)})});save();showCart()}
+function account(){
+ if(db.customer)return `<div class="panel"><h2>Olá, ${db.customer.name.split(' ')[0]}!</h2><p class="muted">${db.customer.whatsapp} • ${db.customer.email}</p><button class="btn" onclick="show('orders')">Ver meu histórico</button><button class="btn light" onclick="logout()">Sair</button></div>
+ <div class="panel"><h3>Shirlei Oliveira</h3><p class="muted">Consultora Mary Kay</p><p>Atendimento personalizado para suas compras e pedidos.</p><p><b>WhatsApp:</b> a cadastrar</p><p><b>Instagram:</b> a cadastrar</p></div>`;
+ return `<div class="panel"><h2>Minha conta</h2><p class="muted">Cadastre-se para fazer pedidos e ter seu histórico de compras.</p><form class="form" onsubmit="register(event)"><input id="name" placeholder="Nome completo" required><input id="whatsapp" placeholder="WhatsApp" required><input id="email" type="email" placeholder="E-mail" required><input id="pass" type="password" placeholder="Senha" required><button class="btn">Criar cadastro</button></form></div>
+ <div class="panel"><h3>Já possui cadastro?</h3><button class="btn light" onclick="login()">Entrar no protótipo</button></div>
+ <div class="panel"><h3>Shirlei Oliveira</h3><p class="muted">Consultora Mary Kay</p><p>Biografia, contatos e redes sociais podem ser editados no painel administrativo.</p></div>`;
+}
+function register(e){e.preventDefault();const c={id:Date.now(),name:name.value,whatsapp:whatsapp.value,email:email.value,pass:pass.value};db.customers.push(c);db.customer=c;save();alert('Cadastro realizado!');show('account')}
+function login(){const em=prompt('E-mail');const pa=prompt('Senha');const c=db.customers.find(x=>x.email===em&&x.pass===pa);if(!c){alert('Cadastro não encontrado.');return}db.customer=c;save();render()}
+function logout(){db.customer=null;save();render()}
+function adminPage(){
+ if(!admin)return `<div class="panel"><h2>Área da Shirlei</h2><p class="muted">Painel administrativo de teste.</p><button class="btn" onclick="adminLogin()">Entrar como administradora</button></div>`;
+ const revenue=db.orders.reduce((a,o)=>a+o.total,0);
+ return `<div class="section-title"><h2>Painel da Shirlei</h2><button class="btn light" style="width:auto;margin:0" onclick="admin=false;render()">Sair</button></div>
+ <div class="grid"><div class="panel"><div class="muted">Clientes</div><div class="total">${db.customers.length}</div></div><div class="panel"><div class="muted">Pedidos</div><div class="total">${db.orders.length}</div></div></div>
+ <div class="panel"><div class="muted">Vendas registradas</div><div class="total">${money(revenue)}</div></div>
+ <div class="panel"><h3>Estoque</h3>${db.products.map(p=>`<div class="row" style="margin:8px 0"><div><b>${p.name}</b><div class="muted">${money(p.price)}</div></div><div><input id="st${p.id}" type="number" min="0" value="${p.stock}" style="width:75px;padding:8px;border:1px solid var(--line);border-radius:8px"><button class="btn light" style="width:auto;margin:0 0 0 4px;padding:8px" onclick="setStock(${p.id})">Salvar</button></div></div>`).join('')}</div>
+ <div class="panel"><h3>Pedidos</h3>${db.orders.length?db.orders.map(o=>`<div class="order"><b>#${String(o.id).slice(-6)}</b> — ${money(o.total)}<div class="muted">${customerName(o.customerId)} • ${o.date}</div><select onchange="setStatus(${o.id},this.value)" style="margin-top:8px;padding:8px;border:1px solid var(--line);border-radius:8px"><option ${o.status==='Pedido recebido'?'selected':''}>Pedido recebido</option><option ${o.status==='Confirmado'?'selected':''}>Confirmado</option><option ${o.status==='Em preparação'?'selected':''}>Em preparação</option><option ${o.status==='Saiu para entrega'?'selected':''}>Saiu para entrega</option><option ${o.status==='Entregue'?'selected':''}>Entregue</option></select></div>`).join(''):'<p class="muted">Nenhum pedido ainda.</p>'}</div>
+ <div class="panel"><h3>Clientes cadastradas</h3>${db.customers.length?db.customers.map(c=>`<div class="row"><div><b>${c.name}</b><div class="muted">${c.whatsapp} • ${c.email}</div></div><span class="badge">${db.orders.filter(o=>o.customerId===c.id).length} pedidos</span></div>`).join(''):'<p class="muted">Nenhuma cliente cadastrada.</p>'}</div>`;
+}
+function adminLogin(){const p=prompt('Senha de teste da administradora');if(p==='1234'){admin=true;render()}else alert('Senha incorreta. Para o teste inicial, use 1234.')}
+function customerName(id){return db.customers.find(c=>c.id===id)?.name||'Cliente'}
+function setStock(id){const v=Math.max(0,Number(document.getElementById('st'+id).value)||0);db.products.find(p=>p.id===id).stock=v;save();render()}
+function setStatus(id,v){db.orders.find(o=>o.id===id).status=v;save();render()}
+render();
+</script>
+</body>
+  
+</html>
